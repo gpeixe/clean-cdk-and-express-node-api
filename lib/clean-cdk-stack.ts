@@ -1,15 +1,11 @@
 import * as cdk from '@aws-cdk/core';
-// import * as sqs from '@aws-cdk/aws-sqs';
+import { APIsModule } from '../modules/APIsModule';
+import { CustomersModule } from '../modules/CustomersModule';
 
 export class CleanCdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'CleanCdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    new CustomersModule(this, 'CustomersModule', props)
+    new APIsModule(this, 'APIsModule', props)
   }
 }
