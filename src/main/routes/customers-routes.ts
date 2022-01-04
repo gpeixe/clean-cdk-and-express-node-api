@@ -1,16 +1,8 @@
 import { Router } from 'express'
 import { adaptExpressRoute } from '../adapters/express-adapter'
 
-import { makeLoadAllCustomersController } from '../factories/controllers/load-all-customers-controller-factory'
-import { makeUpdateCustomerController } from '../factories/controllers/update-customer-controller-factory'
-import { makeDeleteCustomerController } from '../factories/controllers/delete-customer-controller-factory'
-import { makeAddCustomerController } from '../factories/controllers/add-customer-controller-factory'
-import { makeAddCustomerUseCase } from '../factories/use-cases/add-customer-factory'
-import { makeUpdateCustomerUseCase } from '../factories/use-cases/update-customer-factory'
-import { makeLoadAllCustomersUseCase } from '../factories/use-cases/load-all-customers-factory'
-import { makeDeleteCustomerUseCase } from '../factories/use-cases/delete-customer-factory'
-import { UseCaseOptions } from '../factories/use-cases/protocols/options'
-
+import { makeLoadAllCustomersController, makeUpdateCustomerController, makeDeleteCustomerController, makeAddCustomerController } from '../factories/controllers'
+import { makeAddCustomerUseCase, makeUpdateCustomerUseCase, makeLoadAllCustomersUseCase, makeDeleteCustomerUseCase, UseCaseOptions } from '../factories/use-cases'
 
 export default (router: Router): void => {
   const repositoryOption: UseCaseOptions = { repository: 'mongo' }

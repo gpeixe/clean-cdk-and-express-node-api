@@ -1,7 +1,7 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda'
 import { adaptAPIGatewayProxyEventV2Route } from '../../../../../../../../src/main/adapters/aws-api-gateway-proxy-event-v2-adapter'
-import { makeLoadAllCustomersController } from '../../../../../../../../src/main/factories/controllers/load-all-customers-controller-factory'
-import { makeLoadAllCustomersUseCase } from '../../../../../../../../src/main/factories/use-cases/load-all-customers-factory'
+import { makeLoadAllCustomersController } from '../../../../../../../../src/main/factories/controllers'
+import { makeLoadAllCustomersUseCase } from '../../../../../../../../src/main/factories/use-cases'
 
 export async function handler(
   event: APIGatewayProxyEventV2

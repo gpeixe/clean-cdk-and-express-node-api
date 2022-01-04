@@ -1,7 +1,7 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda'
 import { adaptAPIGatewayProxyEventV2Route } from '../../../../../../../../../src/main/adapters/aws-api-gateway-proxy-event-v2-adapter'
-import { makeDeleteCustomerController } from '../../../../../../../../../src/main/factories/controllers/delete-customer-controller-factory'
-import { makeDeleteCustomerUseCase } from '../../../../../../../../../src/main/factories/use-cases/delete-customer-factory'
+import { makeDeleteCustomerController } from '../../../../../../../../../src/main/factories/controllers'
+import { makeDeleteCustomerUseCase } from '../../../../../../../../../src/main/factories/use-cases'
 
 export async function handler(
   event: APIGatewayProxyEventV2
