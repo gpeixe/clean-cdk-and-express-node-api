@@ -1,7 +1,7 @@
+import { DeleteCustomer } from "../../../domain/use-cases/delete-customer";
 import { DeleteCustomerController } from "../../../presentation/controllers/DeleteCustomerController";
 import { Controller } from "../../../presentation/protocols/controller";
-import { makeDeleteCustomerUseCase } from "../use-cases/delete-customer-factory";
 
-export const makeDeleteCustomerController = (): Controller => {
-  return new DeleteCustomerController(makeDeleteCustomerUseCase())
+export const makeDeleteCustomerController = (deleteCustomerUseCase: DeleteCustomer): Controller => {
+  return new DeleteCustomerController(deleteCustomerUseCase)
 }

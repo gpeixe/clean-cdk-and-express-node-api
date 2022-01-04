@@ -1,7 +1,7 @@
+import { AddCustomer } from "../../../domain/use-cases/add-customer";
 import { AddCustomerController } from "../../../presentation/controllers/AddCustomerController";
 import { Controller } from "../../../presentation/protocols/controller";
-import { makeAddCustomerUseCase } from "../use-cases/add-customer-factory";
 
-export const makeAddCustomerController = (): Controller => {
-  return new AddCustomerController(makeAddCustomerUseCase())
+export const makeAddCustomerController = (addCustomerUsecase: AddCustomer): Controller => {
+  return new AddCustomerController(addCustomerUsecase)
 }
