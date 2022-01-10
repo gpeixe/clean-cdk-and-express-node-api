@@ -2,8 +2,7 @@ import { Customer } from "../../domain/entities/customer";
 import { AddCustomer } from "../../domain/use-cases/add-customer";
 import { MissingParamError } from "../errors/missing-param-error";
 import { badRequest, forbidden, serverError, created } from "../helpers/http-helper";
-import { Controller } from "../protocols/controller";
-import { HttpRequest, HttpResponse } from "../protocols/http";
+import { Controller, HttpRequest, HttpResponse } from "../protocols";
 
 export class AddCustomerController implements Controller {
   constructor (private readonly addCustomer: AddCustomer) {}
