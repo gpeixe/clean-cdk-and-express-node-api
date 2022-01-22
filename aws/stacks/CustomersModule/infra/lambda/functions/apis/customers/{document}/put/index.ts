@@ -11,12 +11,12 @@ import { Table } from '@aws-cdk/aws-dynamodb'
 export function makeUpdateCustomerLambda(app: Construct) {
   const customersTable = Table.fromTableAttributes(
     app,
-    'CustomersTable',
+    'CustomersTableImportedFromUpateCustomerLambda',
     {
       tableName: StringParameter.fromStringParameterName(
         app,
-        'CustomersTable',
-        'modules.customers.dynamodb.table.customers'
+        'CustomersTableImportedFromUpateCustomerLambdaParameter',
+        'modules.dynamodb.dynamodb.table.customers'
       ).stringValue
     }
   )
@@ -34,9 +34,9 @@ export function makeUpdateCustomerLambda(app: Construct) {
 
   new StringParameter(
     app,
-    'modules.customers.lambda.api.customers.{customer_id}.put',
+    'modules.customers.lambda.api.customers.document.put',
     {
-      parameterName: 'modules.customers.lambda.api.customers.{customer_id}.put',
+      parameterName: 'modules.customers.lambda.api.customers.document.put',
       stringValue: resource.functionArn,
       type: ParameterType.STRING,
       tier: ParameterTier.STANDARD

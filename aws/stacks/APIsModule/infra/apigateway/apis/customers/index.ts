@@ -17,7 +17,7 @@ export function makeCustomersAPI(app: Construct) {
   customers.addMethod('GET', new LambdaIntegration(lambdas.loadAllCustomersLambda))
   customers.addMethod('POST', new LambdaIntegration(lambdas.addCustomerLambda))
 
-  const customerId = customers.addResource('{customer_id}')
+  const customerId = customers.addResource('{document}')
   customerId.addMethod('DELETE', new LambdaIntegration(lambdas.deleteCustomerLambda))
   customerId.addMethod('PUT', new LambdaIntegration(lambdas.updateCustomerLambda))
  

@@ -11,7 +11,7 @@ export class CustomersAPILambdas {
   constructor(app: Construct) {
     this.loadAllCustomersLambda = Function.fromFunctionAttributes(
       app,
-      'LoadAllCustomersLambdaImportedFromArn',
+      'LoadAllCustomersLambdaImportedFromCustomersAPI',
       {
         sameEnvironment: true,
         functionArn: StringParameter.fromStringParameterName(
@@ -24,7 +24,7 @@ export class CustomersAPILambdas {
 
     this.addCustomerLambda = Function.fromFunctionAttributes(
       app,
-      'AddCustomerLambdaImportedFromArn',
+      'AddCustomerLambdaImportedFromCustomersAPI',
       {
         sameEnvironment: true,
         functionArn: StringParameter.fromStringParameterName(
@@ -35,28 +35,30 @@ export class CustomersAPILambdas {
       }
     )
 
+    console.log('addCustomerLambda: ', this.addCustomerLambda)
+
     this.deleteCustomerLambda = Function.fromFunctionAttributes(
       app,
-      'DeleteCustomerLambdaImportedFromArn',
+      'DeleteCustomerLambdaImportedFromCustomersAPI',
       {
         sameEnvironment: true,
         functionArn: StringParameter.fromStringParameterName(
           app,
-          'modules.customers.lambda.api.customers.{customer_id}.delete',
-          'modules.customers.lambda.api.customers.{customer_id}.delete'
+          'modules.customers.lambda.api.customers.document.delete',
+          'modules.customers.lambda.api.customers.document.delete'
         ).stringValue
       }
     )
 
     this.updateCustomerLambda = Function.fromFunctionAttributes(
       app,
-      'UpdateCustomerLambdaImportedFromArn',
+      'UpdateCustomerLambdaImportedFromCustomersAPI',
       {
         sameEnvironment: true,
         functionArn: StringParameter.fromStringParameterName(
           app,
-          'modules.customers.lambda.api.customers.{customer_id}.put',
-          'modules.customers.lambda.api.customers.{customer_id}.put'
+          'modules.customers.lambda.api.customers.document.put',
+          'modules.customers.lambda.api.customers.document.put'
         ).stringValue
       }
     )

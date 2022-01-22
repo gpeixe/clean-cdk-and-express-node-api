@@ -11,12 +11,12 @@ import { Table } from '@aws-cdk/aws-dynamodb'
 export function makeDeleteCustomerLambda(app: Construct) {
   const customersTable = Table.fromTableAttributes(
     app,
-    'CustomersTable',
+    'CustomersTableImporteFromDeleteCustomerLambda',
     {
       tableName: StringParameter.fromStringParameterName(
         app,
-        'CustomersTable',
-        'modules.customers.dynamodb.table.customers'
+        'CustomersTableImporteFromDeleteCustomerLambdaParameter',
+        'modules.dynamodb.dynamodb.table.customers'
       ).stringValue
     }
   )
@@ -34,9 +34,9 @@ export function makeDeleteCustomerLambda(app: Construct) {
 
   new StringParameter(
     app,
-    'modules.customers.lambda.api.customers.{customer_id}.delete',
+    'modules.customers.lambda.api.customers.document.delete',
     {
-      parameterName: 'modules.customers.lambda.api.customers.{customer_id}.delete',
+      parameterName: 'modules.customers.lambda.api.customers.document.delete',
       stringValue: resource.functionArn,
       type: ParameterType.STRING,
       tier: ParameterTier.STANDARD

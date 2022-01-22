@@ -1,7 +1,7 @@
 import { Construct } from '@aws-cdk/core'
-import { makeCustomersTable } from './tables/customers'
+import { makeCustomersTable } from './customers'
 
-export class CustomersModuleDynamoDb extends Construct {
+export class DynamoDbTables extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id)
     makeCustomersTable(this)

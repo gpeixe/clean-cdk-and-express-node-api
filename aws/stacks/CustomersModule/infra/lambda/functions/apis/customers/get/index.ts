@@ -11,16 +11,16 @@ import { Table } from '@aws-cdk/aws-dynamodb'
 export function makeLoadAllCustomersLambda(app: Construct) {
   const customersTable = Table.fromTableAttributes(
     app,
-    'CustomersTable',
+    'CustomersTableImportedFromLoadAllCustomersLambda',
     {
       tableName: StringParameter.fromStringParameterName(
         app,
-        'CustomersTable',
-        'modules.customers.dynamodb.table.customers'
+        'CustomersTableImportedFromLoadAllCustomersLambdaParameter',
+        'modules.dynamodb.dynamodb.table.customers'
       ).stringValue
     }
   )
-
+ console.log('customersTable: ', customersTable)
   const resource = new NodejsFunction(app, 'LoadAllCustomersLambda', {
     handler: 'handler',
     functionName: 'customers-API-loadAllCustomers-lambda',

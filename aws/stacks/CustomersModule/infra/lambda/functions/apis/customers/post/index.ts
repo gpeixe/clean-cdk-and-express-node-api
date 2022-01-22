@@ -11,12 +11,12 @@ import { Table } from '@aws-cdk/aws-dynamodb'
 export function makeAddCustomerLambda(app: Construct) {
   const customersTable = Table.fromTableAttributes(
     app,
-    'CustomersTable',
+    'CustomersTableImportedFromAddCustomerLambda',
     {
       tableName: StringParameter.fromStringParameterName(
         app,
-        'CustomersTable',
-        'modules.customers.dynamodb.table.customers'
+        'CustomersTableAddCustomerLambdaParameter',
+        'modules.dynamodb.dynamodb.table.customers'
       ).stringValue
     }
   )
