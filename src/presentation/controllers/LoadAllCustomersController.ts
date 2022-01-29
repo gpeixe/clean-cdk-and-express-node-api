@@ -8,10 +8,12 @@ export class LoadAllCustomersController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      console.log('httpRequest: ', httpRequest)
       const customers = await this.loadAllCustomers.loadAll()
       if (customers.length === 0) return noContent()
       return ok(customers)
     } catch (error) {
+      console.log('error at controller: ', error)
       return serverError(error as Error)
     }
   }

@@ -7,5 +7,12 @@ export const adaptAPIGatewayProxyEventV2Route = async (req: APIGatewayProxyEvent
     pathParameters: req.pathParameters || {},
   }
   const httpResponse = await controller.handle(httpRequest)
-  return httpResponse as APIGatewayProxyResultV2
+  const body = httpResponse.body ? JSON.stringify(httpResponse.body) : null
+  return {
+    statusCode: httpResponse.statusCode,
+    body: body,
+    headers: {
+      'Allow-Access-Control-Origin': '*'
+    }
+  } as APIGatewayProxyResultV2
 }

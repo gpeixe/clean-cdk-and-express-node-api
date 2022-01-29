@@ -4,7 +4,10 @@ import { HttpResponse } from '../protocols/http'
 
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,
-  body: error,
+  body: {
+    errorName: error.name,
+    errorMessage: error.message
+  },
 })
 
 export const serverError = (error: Error): HttpResponse => ({
@@ -24,7 +27,10 @@ export const ok = (data: any): HttpResponse => ({
 
 export const forbidden = (error: Error): HttpResponse => ({
   statusCode: 403,
-  body: error
+  body: {
+    errorName: error.name,
+    errorMessage: error.message
+  }
 })
 
 export const notFound = (): HttpResponse => ({

@@ -5,9 +5,28 @@ import { makeLoadAllCustomersController, makeUpdateCustomerController, makeDelet
 import { makeAddCustomerUseCase, makeUpdateCustomerUseCase, makeLoadAllCustomersUseCase, makeDeleteCustomerUseCase, UseCaseOptions } from '../factories/use-cases'
 
 export default (router: Router): void => {
+  router.post('/customers', addCustomerControllerExpressRoute)
+  router.get('/customers', loadAllCustomersControllerExpressRoute)
+  router.delete('/customers/:document', deleteCustomerControllerExpressRoute)
+  router.put('/customers/:document', updateCustomerControllerExpressRoute)
+}
+
+const addCustomerControllerExpressRoute = () => {
   const repositoryOption: UseCaseOptions = { repository: 'mongo' }
-  router.post('/customers', adaptExpressRoute(makeAddCustomerController(makeAddCustomerUseCase(repositoryOption))))
-  router.get('/customers', adaptExpressRoute(makeLoadAllCustomersController(makeLoadAllCustomersUseCase(repositoryOption))))
-  router.delete('/customers/:customer_id', adaptExpressRoute(makeDeleteCustomerController(makeDeleteCustomerUseCase(repositoryOption))))
-  router.put('/customers/:customer_id', adaptExpressRoute(makeUpdateCustomerController(makeUpdateCustomerUseCase(repositoryOption))))
+  return adaptExpressRoute(makeAddCustomerController(makeAddCustomerUseCase(repositoryOption)))
+}
+
+const loadAllCustomersControllerExpressRoute = () => {
+  const repositoryOption: UseCaseOptions = { repository: 'mongo' }
+  return adaptExpressRoute(makeLoadAllCustomersController(makeLoadAllCustomersUseCase(repositoryOption)))
+}
+
+const deleteCustomerControllerExpressRoute = () => {
+  const repositoryOption: UseCaseOptions = { repository: 'mongo' }
+  return adaptExpressRoute(makeDeleteCustomerController(makeDeleteCustomerUseCase(repositoryOption)))
+}
+
+const updateCustomerControllerExpressRoute = () => {
+  const repositoryOption: UseCaseOptions = { repository: 'mongo' }
+  return adaptExpressRoute(makeUpdateCustomerController(makeUpdateCustomerUseCase(repositoryOption)))
 }

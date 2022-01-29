@@ -1,60 +1,47 @@
+import { DeleteCommand, GetCommand, PutCommand, UpdateCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { AddCustomerRepository } from "../../../data/protocols/add-customer-repository";
 import { DeleteCustomerRepository } from "../../../data/protocols/delete-customer-repository";
 import { LoadAllCustomersRepository } from "../../../data/protocols/load-all-customers-repository";
 import { UpdateCustomerRepository } from "../../../data/protocols/update-customer-repository";
-import * as AWS from 'aws-sdk';
-import { DynamoDB } from "aws-sdk";
 import { Customer } from "../../../domain/entities/customer";
+import { dynamoHelper } from "./dynamo-helper";
 
 export class DynamoCustomerRepository implements AddCustomerRepository, DeleteCustomerRepository, LoadAllCustomersRepository, UpdateCustomerRepository {
-  private client: DynamoDB;
-  private TABLE_NAME = 'Customers'
+  private client;
+  private TABLE_NAME = 'customers'
 
   constructor() {
-    this.client =  new AWS.DynamoDB();
+    this.client =  dynamoHelper.getClient()
   }
 
   async add (customer: Customer): Promise<boolean> {
-   const queryCustomerByDocumentResult = await this.client.query({
+   const queryCustomerByDocumentResult = await this.client.send(
+     new GetCommand({
       TableName: this.TABLE_NAME,
-      ExpressionAttributeValues: {
-        ":doc": {
-          S: customer.document
-         }
-       }, 
-      KeyConditionExpression: "document = :doc", 
-    }).promise()
-    const userAlreadyExists = queryCustomerByDocumentResult.Items?.length !== 0
+      Key: { document: customer.document }
+   }))
+    const userAlreadyExists = queryCustomerByDocumentResult.Item !== undefined
     if (userAlreadyExists) return false
-    await this.client.putItem({
-      TableName: this.TABLE_NAME,
-      Item: { 
-        name : { S: customer.name },
-        age: { N: customer.age.toString() },
-        document: { S: customer.document },
-        loyaltyPoints: { S: customer.loyaltyPoints.toString() }
-      }
-    }).promise()
+    await this.client.send(
+      new PutCommand({
+        TableName: this.TABLE_NAME,
+        Item: customer 
+    }))
     return true
   }
 
   async delete (document: string): Promise<boolean> {
-    const params = {
-      Key: {
-       "document": {
-         S: document
-        },
-      }, 
-      TableName: this.TABLE_NAME
-     };
-    const deleteResult = await this.client.deleteItem(params).promise()
+    const deleteResult = await this.client.send(new DeleteCommand({
+      TableName: this.TABLE_NAME,
+      Key: { document }
+    }))
     console.log('DeleteResult: ', JSON.stringify(deleteResult))
     return true
   }
 
   async loadAll (): Promise<Customer[]> {
-    const scanResult = await this.client.scan({ TableName: this.TABLE_NAME }).promise()
-    const customers = scanResult.Items ? scanResult.Items as Customer[] : [] as Customer[]
+    const scanResult = await this.client.send(new ScanCommand({ TableName: this.TABLE_NAME }))
+    const customers = scanResult.Items ? scanResult.Items as unknown as Customer[] : [] as Customer[]
     return customers
   }
   
@@ -66,41 +53,35 @@ export class DynamoCustomerRepository implements AddCustomerRepository, DeleteCu
 
     if (customer.loyaltyPoints !== undefined) {
       attributesNames["#LP"] = "loyaltyPoints"
-      attributesValues[":lp"] = { N: customer.loyaltyPoints.toString() }
-      updateExpression += " #LP = #:lp,"
+      attributesValues[":lp"] = customer.loyaltyPoints
+      updateExpression += " #LP = :lp,"
     }
 
     if (customer.age !== undefined) {
       attributesNames["#AGE"] = "age"
-      attributesValues[":age"] = { N: customer.age.toString() }
-      updateExpression += " #AGE = #:age,"
+      attributesValues[":age"] = customer.age
+      updateExpression += " #AGE = :age,"
     }
       
     if (customer.name !== undefined) {
-      attributesValues[":nm"] = { S: customer.name }
+      attributesValues[":nm"] = customer.name 
       attributesNames["#NM"] = "name"
-      updateExpression += " #NM = #:nm,"
+      updateExpression += " #NM = :nm,"
     }
     
     updateExpression = updateExpression.split('')
     updateExpression.pop()
     updateExpression = updateExpression.join('')
 
-    const params = {
+    const updateResult = await this.client.send(new UpdateCommand({
       ExpressionAttributeNames: attributesNames, 
       ExpressionAttributeValues: attributesValues, 
-      Key: {
-       "document": {
-         S: customer.document
-        }
-      }, 
+      Key: { document: customer.document },
       ReturnValues: "ALL_NEW", 
       TableName: this.TABLE_NAME, 
       UpdateExpression: updateExpression
-     };
-
-    const updateResult = await this.client.updateItem(params).promise()
+     }))
     console.log('UpdateResult: ', JSON.stringify(updateResult))
-    return updateResult.$response.data as Customer
+    return updateResult.Attributes as Customer
   }
 }

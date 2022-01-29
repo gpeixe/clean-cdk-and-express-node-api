@@ -1,4 +1,5 @@
 import { Customer } from "../../domain/entities/customer";
+import { UserAlreadyExistsError } from "../../domain/errors/UserAlreadyExistsError";
 import { AddCustomer } from "../../domain/use-cases/add-customer";
 import { MissingParamError } from "../errors/missing-param-error";
 import { badRequest, forbidden, serverError, created } from "../helpers/http-helper";
@@ -9,6 +10,7 @@ export class AddCustomerController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      console.log('httpRequest: ', httpRequest)
       const requiredFields = ['document', 'name', 'age']
       for (const field of requiredFields) {
         if (httpRequest.body[field] === undefined) {
@@ -24,9 +26,10 @@ export class AddCustomerController implements Controller {
       }
       const success = await this.addCustomer.add(customer)
       if (!success)
-        return forbidden(new Error('Customer with document provided already exists.'))
+        return forbidden(new UserAlreadyExistsError())
       return created(customer)
     } catch (error) {
+      console.log('error at controller: ', error)
       return serverError(error as Error)
     }
   }
