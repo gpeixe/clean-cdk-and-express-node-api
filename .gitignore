@@ -7,3 +7,5 @@ node_modules
 aws/.cdk.staging
 aws/cdk.out
 data
+package-lock.json
+dist

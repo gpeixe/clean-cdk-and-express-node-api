@@ -1,1 +1,0 @@
-{"version":3,"file":"DbDeleteCustomer.js","sourceRoot":"","sources":["../../../src/data/use-cases/DbDeleteCustomer.ts"],"names":[],"mappings":";;;AAGA,MAAa,gBAAgB;IAC3B,YAA8B,wBAAkD;QAAlD,6BAAwB,GAAxB,wBAAwB,CAA0B;IAAG,CAAC;IAEpF,KAAK,CAAC,MAAM,CAAE,QAAgB;QAC5B,OAAO,MAAM,IAAI,CAAC,wBAAwB,CAAC,MAAM,CAAC,QAAQ,CAAC,CAAA;IAC7D,CAAC;CACF;AAND,4CAMC"}
