@@ -1,8 +1,6 @@
-import setupRoutes from './routes'
-import express = require('express')
+import express from 'express'
+import customerRoutes from '../routes/customers-routes'
 
 const app = express()
-
-setupRoutes(app)
-
+customerRoutes(app)
 export default app

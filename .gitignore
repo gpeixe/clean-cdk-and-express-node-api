@@ -6,3 +6,4 @@ node_modules
 # CDK asset staging directory
 aws/.cdk.staging
 aws/cdk.out
+data

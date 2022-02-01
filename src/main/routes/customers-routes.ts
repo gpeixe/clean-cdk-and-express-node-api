@@ -5,10 +5,10 @@ import { makeLoadAllCustomersController, makeUpdateCustomerController, makeDelet
 import { makeAddCustomerUseCase, makeUpdateCustomerUseCase, makeLoadAllCustomersUseCase, makeDeleteCustomerUseCase, UseCaseOptions } from '../factories/use-cases'
 
 export default (router: Router): void => {
-  router.post('/customers', addCustomerControllerExpressRoute)
-  router.get('/customers', loadAllCustomersControllerExpressRoute)
-  router.delete('/customers/:document', deleteCustomerControllerExpressRoute)
-  router.put('/customers/:document', updateCustomerControllerExpressRoute)
+  router.post('/customers', addCustomerControllerExpressRoute())
+  router.get('/customers', loadAllCustomersControllerExpressRoute())
+  router.delete('/customers/:document', deleteCustomerControllerExpressRoute())
+  router.put('/customers/:document', updateCustomerControllerExpressRoute())
 }
 
 const addCustomerControllerExpressRoute = () => {

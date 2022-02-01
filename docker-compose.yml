@@ -22,6 +22,8 @@ services:
     ports:
       - "5050:5050"
       - "9222:9222"
+    environment:
+      MONGO_URL: mongodb://mongo:27017/genious
     links:
       - mongo
 networks:

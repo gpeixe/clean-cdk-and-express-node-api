@@ -15,5 +15,5 @@
     }
   },
   "include": ["src", "tests"],
-  "exclude": ["aws/**"]
+  "exclude": ["aws/**", "node_modules"]
 }
