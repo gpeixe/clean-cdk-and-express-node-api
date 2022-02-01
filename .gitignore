@@ -6,6 +6,7 @@ node_modules
 # CDK asset staging directory
 aws/.cdk.staging
 aws/cdk.out
-data
+./data/**
+./data
 package-lock.json
 dist
