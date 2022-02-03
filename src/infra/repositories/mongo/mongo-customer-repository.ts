@@ -13,7 +13,7 @@ export class MongoCustomerRepository implements  AddCustomerRepository, UpdateCu
 
   async add (customer: Customer): Promise<boolean> {
     const collection = await this.getCustomersCollection()
-    const result = await collection.insertOne(customer)
+    const result = await collection.insertOne(Object.assign({}, customer))
     return result.acknowledged
   }
 

@@ -3,7 +3,6 @@ import app from './config/app'
 import { MongoHelper } from '../infra/repositories/mongo/mongo-helper'
 
 MongoHelper.connect().then(() => {
-  console.log('connected')
+  app.listen(env.port, () => console.log(`Running at http://localhost:${env.port}`))
 }).catch((e) => console.log('error: ', e))
 
-app.listen(env.port, () => console.log(`Running at http://localhost:${env.port}`))
