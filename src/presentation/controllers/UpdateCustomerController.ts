@@ -15,12 +15,12 @@ export class UpdateCustomerController implements Controller {
       const { document } = httpRequest.pathParameters
       if (name === undefined && age === undefined && loyaltyPoints === undefined)
         return badRequest(new MissingParamError('name, age or loyaltyPoints.'))
-      const customer: Customer = {
+      const customer: Customer = JSON.parse(JSON.stringify({
         document,
         name,
         age,
         loyaltyPoints
-      }
+      }))
       const updatedCustomer = await this.updateCustomer.update(customer)
       if (!updatedCustomer)
         return notFound()

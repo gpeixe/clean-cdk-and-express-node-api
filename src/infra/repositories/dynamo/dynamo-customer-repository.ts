@@ -1,3 +1,4 @@
+import { FindOneCustomerRepository } from "@/data/protocols/find-one-customer-repository";
 import { DeleteCommand, GetCommand, PutCommand, UpdateCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { AddCustomerRepository } from "../../../data/protocols/add-customer-repository";
 import { DeleteCustomerRepository } from "../../../data/protocols/delete-customer-repository";
@@ -6,7 +7,7 @@ import { UpdateCustomerRepository } from "../../../data/protocols/update-custome
 import { Customer } from "../../../domain/entities/customer";
 import { dynamoHelper } from "./dynamo-helper";
 
-export class DynamoCustomerRepository implements AddCustomerRepository, DeleteCustomerRepository, LoadAllCustomersRepository, UpdateCustomerRepository {
+export class DynamoCustomerRepository implements AddCustomerRepository, DeleteCustomerRepository, LoadAllCustomersRepository, UpdateCustomerRepository, FindOneCustomerRepository {
   private client;
   private TABLE_NAME = 'customers'
 
@@ -14,14 +15,16 @@ export class DynamoCustomerRepository implements AddCustomerRepository, DeleteCu
     this.client =  dynamoHelper.getClient()
   }
 
+  async findOne (document: string): Promise<Customer | undefined> {
+    const customer = await this.client.send(
+      new GetCommand({
+       TableName: this.TABLE_NAME,
+       Key: { document: document }
+    }))
+    return customer.Item
+  }
+
   async add (customer: Customer): Promise<boolean> {
-   const queryCustomerByDocumentResult = await this.client.send(
-     new GetCommand({
-      TableName: this.TABLE_NAME,
-      Key: { document: customer.document }
-   }))
-    const userAlreadyExists = queryCustomerByDocumentResult.Item !== undefined
-    if (userAlreadyExists) return false
     await this.client.send(
       new PutCommand({
         TableName: this.TABLE_NAME,

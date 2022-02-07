@@ -1,3 +1,4 @@
+import { FindOneCustomerRepository } from '../../../data/protocols/find-one-customer-repository'
 import { Collection } from 'mongodb'
 import { AddCustomerRepository } from '../../../data/protocols/add-customer-repository'
 import { DeleteCustomerRepository } from '../../../data/protocols/delete-customer-repository'
@@ -6,7 +7,7 @@ import { UpdateCustomerRepository } from '../../../data/protocols/update-custome
 import { Customer } from '../../../domain/entities/customer'
 import { MongoHelper } from './mongo-helper'
 
-export class MongoCustomerRepository implements  AddCustomerRepository, UpdateCustomerRepository, LoadAllCustomersRepository, DeleteCustomerRepository {
+export class MongoCustomerRepository implements AddCustomerRepository, UpdateCustomerRepository, LoadAllCustomersRepository, DeleteCustomerRepository, FindOneCustomerRepository {
   private async getCustomersCollection (): Promise<Collection> {
     return await MongoHelper.getCollection('customers')
   }
@@ -29,10 +30,18 @@ export class MongoCustomerRepository implements  AddCustomerRepository, UpdateCu
     return result.deletedCount === 1
   }
 
+  async findOne (document: string): Promise<Customer | undefined> {
+    const collection = await this.getCustomersCollection()
+    const customer  = await collection.findOne({ document })
+    return customer && MongoHelper.map(customer)
+  }
+
   async update (customer: Customer): Promise<Customer | undefined> {
     const { document, ...rest } = customer
     const collection = await this.getCustomersCollection()
-    const newCustomer = await (await collection.findOneAndUpdate({ document }, { $set: rest, returnNewDocument: true })).value
-    return newCustomer && MongoHelper.map(newCustomer)
+    const updated = (await collection.updateOne({ document }, { $set: rest })).matchedCount === 1
+    if (!updated) return undefined
+    const newCustomer = await this.findOne(document)
+    return newCustomer
   }
 }

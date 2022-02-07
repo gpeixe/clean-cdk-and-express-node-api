@@ -11,3 +11,4 @@ aws/cdk.out
 ./data
 ./dist
 data
+dist

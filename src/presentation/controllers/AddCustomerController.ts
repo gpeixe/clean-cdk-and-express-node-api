@@ -1,3 +1,4 @@
+import { FindOneCustomer } from "@/domain/use-cases/find-one-customer";
 import { Customer } from "../../domain/entities/customer";
 import { UserAlreadyExistsError } from "../../domain/errors/UserAlreadyExistsError";
 import { AddCustomer } from "../../domain/use-cases/add-customer";
@@ -6,7 +7,10 @@ import { badRequest, forbidden, serverError, created } from "../helpers/http-hel
 import { Controller, HttpRequest, HttpResponse } from "../protocols";
 
 export class AddCustomerController implements Controller {
-  constructor (private readonly addCustomer: AddCustomer) {}
+  constructor (
+    private readonly addCustomer: AddCustomer,
+    private readonly findOneCustomer: FindOneCustomer
+    ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -18,15 +22,15 @@ export class AddCustomerController implements Controller {
         }
       }
       const { document, name, age } = httpRequest.body
+      const customerAlreadyExists = await this.findOneCustomer.findOne(document)
+      if (customerAlreadyExists) return forbidden(new UserAlreadyExistsError())
       const customer: Customer = {
         document,
         name,
         age,
         loyaltyPoints: 0
       }
-      const success = await this.addCustomer.add(customer)
-      if (!success)
-        return forbidden(new UserAlreadyExistsError())
+      await this.addCustomer.add(customer)
       return created(customer)
     } catch (error) {
       console.log('error at controller: ', error)

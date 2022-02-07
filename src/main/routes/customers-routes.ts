@@ -3,6 +3,7 @@ import { adaptExpressRoute } from '../adapters/express-adapter'
 
 import { makeLoadAllCustomersController, makeUpdateCustomerController, makeDeleteCustomerController, makeAddCustomerController } from '../factories/controllers'
 import { makeAddCustomerUseCase, makeUpdateCustomerUseCase, makeLoadAllCustomersUseCase, makeDeleteCustomerUseCase, UseCaseOptions } from '../factories/use-cases'
+import { makeFindOneCustomerUseCase } from '../factories/use-cases/find-one-customer-factory'
 
 export default (router: Router): void => {
   router.post('/customers', addCustomerControllerExpressRoute())
@@ -13,7 +14,7 @@ export default (router: Router): void => {
 
 const addCustomerControllerExpressRoute = () => {
   const repositoryOption: UseCaseOptions = { repository: 'mongo' }
-  return adaptExpressRoute(makeAddCustomerController(makeAddCustomerUseCase(repositoryOption)))
+  return adaptExpressRoute(makeAddCustomerController(makeAddCustomerUseCase(repositoryOption), makeFindOneCustomerUseCase(repositoryOption)))
 }
 
 const loadAllCustomersControllerExpressRoute = () => {
