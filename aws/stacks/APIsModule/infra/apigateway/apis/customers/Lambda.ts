@@ -35,8 +35,6 @@ export class CustomersAPILambdas {
       }
     )
 
-    console.log('addCustomerLambda: ', this.addCustomerLambda)
-
     this.deleteCustomerLambda = Function.fromFunctionAttributes(
       app,
       'DeleteCustomerLambdaImportedFromCustomersAPI',

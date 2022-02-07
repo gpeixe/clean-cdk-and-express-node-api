@@ -20,7 +20,7 @@ export function makeLoadAllCustomersLambda(app: Construct) {
       ).stringValue
     }
   )
- console.log('customersTable: ', customersTable)
+  
   const resource = new NodejsFunction(app, 'LoadAllCustomersLambda', {
     handler: 'handler',
     functionName: 'customers-API-loadAllCustomers-lambda',

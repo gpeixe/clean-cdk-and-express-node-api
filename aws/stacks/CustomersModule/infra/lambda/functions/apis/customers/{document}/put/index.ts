@@ -21,6 +21,7 @@ export function makeUpdateCustomerLambda(app: Construct) {
     }
   )
 
+  console.log("path.dirname(''): ", path.dirname(''))
   const resource = new NodejsFunction(app, 'UpdateCustomerLambda', {
     handler: 'handler',
     functionName: 'customers-API-updateCustomer-lambda',

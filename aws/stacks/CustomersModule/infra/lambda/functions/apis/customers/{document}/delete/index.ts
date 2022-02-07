@@ -20,7 +20,6 @@ export function makeDeleteCustomerLambda(app: Construct) {
       ).stringValue
     }
   )
-
   const resource = new NodejsFunction(app, 'DeleteCustomerLambda', {
     handler: 'handler',
     functionName: 'customers-API-deleteCustomer-lambda',
