@@ -1,4 +1,4 @@
-import { FindOneCustomer } from "@/domain/use-cases/find-one-customer";
+import { FindOneCustomer } from "../../domain/use-cases/find-one-customer";
 import { Customer } from "../../domain/entities/customer";
 import { UserAlreadyExistsError } from "../../domain/errors/UserAlreadyExistsError";
 import { AddCustomer } from "../../domain/use-cases/add-customer";

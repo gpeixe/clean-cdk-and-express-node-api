@@ -1,4 +1,4 @@
-import { FindOneCustomerRepository } from "@/data/protocols/find-one-customer-repository";
+import { FindOneCustomerRepository } from "../../../data/protocols/find-one-customer-repository";
 import { DeleteCommand, GetCommand, PutCommand, UpdateCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import { AddCustomerRepository } from "../../../data/protocols/add-customer-repository";
 import { DeleteCustomerRepository } from "../../../data/protocols/delete-customer-repository";
